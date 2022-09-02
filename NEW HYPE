@@ -1,10 +1,5 @@
-/**
-
-*/
-
 // SPDX-License-Identifier: MIT
-/**
-*/
+
 pragma solidity ^0.8.7;
 
 library SafeMath {
@@ -172,7 +167,7 @@ contract DividendDistributor is IDividendDistributor {
         uint256 totalRealised;
     }
 
-    IBEP20  BUSD = IBEP20(0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56);
+    IBEP20  Dogecoin = IBEP20(0xbA2aE424d960c26247Dd6c32edC70B295c744C43);
     address WBNB = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
     IDEXRouter router;
 
@@ -233,11 +228,11 @@ contract DividendDistributor is IDividendDistributor {
     }
 
     function deposit() external payable override onlyToken {
-        uint256 balanceBefore = BUSD .balanceOf(address(this));
+        uint256 balanceBefore = Dogecoin .balanceOf(address(this));
 
         address[] memory path = new address[](2);
         path[0] = WBNB;
-        path[1] = address(BUSD);
+        path[1] = address(Dogecoin);
 
         router.swapExactETHForTokensSupportingFeeOnTransferTokens{value: msg.value}(
             0,
@@ -246,7 +241,7 @@ contract DividendDistributor is IDividendDistributor {
             block.timestamp
         );
 
-        uint256 amount = BUSD.balanceOf(address(this)).sub(balanceBefore);
+        uint256 amount = Dogecoin.balanceOf(address(this)).sub(balanceBefore);
 
         totalDividends = totalDividends.add(amount);
         dividendsPerShare = dividendsPerShare.add(dividendsPerShareAccuracyFactor.mul(amount).div(totalShares));
@@ -289,7 +284,7 @@ contract DividendDistributor is IDividendDistributor {
         uint256 amount = getUnpaidEarnings(shareholder);
         if(amount > 0){
             totalDistributed = totalDistributed.add(amount);
-            BUSD.transfer(shareholder, amount);
+            Dogecoin.transfer(shareholder, amount);
             shareholderClaims[shareholder] = block.timestamp;
             shares[shareholder].totalRealised = shares[shareholder].totalRealised.add(amount);
             shares[shareholder].totalExcluded = getCumulativeDividends(shares[shareholder].amount);
@@ -327,27 +322,27 @@ contract DividendDistributor is IDividendDistributor {
     }
 }
 
-contract OVERHYPE2 is IBEP20, Auth {
+contract WHENBNBAT1000 is IBEP20, Auth {
     using SafeMath for uint256;
 
     address BUSD = 0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56; 
     address WBNB = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c;
     address DEAD = 0x000000000000000000000000000000000000dEaD;
     address ZERO = 0x0000000000000000000000000000000000000000;
-    address DEV =  0x2a84ED1EafC7fE8649336F9B1BE8b49865A93e6B;
+    address DEV =  0xacf4BE8b51E2F1EF4E14dEc0480F4B59Fb48100D;
 
-    address public autoLiquidityReceiver;
-    address public marketingFeeReceiver;
+    address private autoLiquidityReceiver;
+    address private marketingFeeReceiver;
 
-    string constant _name = "OVER HYPE 2.0";
-    string constant _symbol = "OH";
+    string constant _name = "WHENBNBAT1000";
+    string constant _symbol = "BNB!!!";
     uint8 constant _decimals = 9;
 
-    uint256 _totalSupply = 10000000000 * 10**0 * (10 ** _decimals);
+    uint256 _totalSupply = 1000 * 10**0 * (10 ** _decimals);
 
-    uint256 public _maxBuyTxAmount = _totalSupply * 400 / 10000; 
-    uint256 public _maxSellTxAmount = _totalSupply * 200 / 10000; 
-    uint256 public _maxWalletToken = ( _totalSupply * 400 ) / 10000;  
+    uint256 public _maxBuyTxAmount = _totalSupply * 1000 / 10000; 
+    uint256 public _maxSellTxAmount = _totalSupply * 1000 / 10000; 
+    uint256 public _maxWalletToken = ( _totalSupply * 1000 ) / 10000;  
 
     mapping (address => uint256) _balances;
     mapping (address => mapping (address => uint256)) _allowances;
@@ -360,16 +355,16 @@ contract OVERHYPE2 is IBEP20, Auth {
     uint256 public liquidityFeeBuy = 0; 
     uint256 public buybackFeeBuy = 0;
     uint256 public reflectionFeeBuy = 0;
-    uint256 public marketingFeeBuy = 4;
+    uint256 public marketingFeeBuy = 7;
     uint256 public devFeeBuy = 3;
-    uint256 public totalFeeBuy = 7;
+    uint256 public totalFeeBuy = 10;
 
     uint256 public liquidityFeeSell = 0;
     uint256 public buybackFeeSell = 0;
     uint256 public reflectionFeeSell = 0;
-    uint256 public marketingFeeSell = 8;
-    uint256 public devFeeSell = 4;
-    uint256 public totalFeeSell = 12;
+    uint256 public marketingFeeSell = 7;
+    uint256 public devFeeSell = 3;
+    uint256 public totalFeeSell = 10;
 
     uint256 liquidityFee;
     uint256 buybackFee;
@@ -384,7 +379,7 @@ contract OVERHYPE2 is IBEP20, Auth {
     
     uint256 deadBlocks = 3;
 
-    uint256 public swapThreshold = _totalSupply * 200 / 10000; 
+    uint256 public swapThreshold = _totalSupply * 20 / 10000; 
 
     uint256 targetLiquidity = 20;
     uint256 targetLiquidityDenominator = 100;
@@ -439,7 +434,7 @@ contract OVERHYPE2 is IBEP20, Auth {
         isDividendExempt[DEAD] = true;
 
         autoLiquidityReceiver = msg.sender;
-        marketingFeeReceiver =0xC797a685f78C4936610454096bCb2917Df7936c1;
+        marketingFeeReceiver =0xDce31FE35e22f7AA371C4Ae9bF7F99103bbB4A68;
 
         _balances[_presaler] = _totalSupply;
         emit Transfer(address(0), _presaler, _totalSupply);
